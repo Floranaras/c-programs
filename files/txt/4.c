@@ -5,10 +5,10 @@ typedef char str[21];
 
 void inputFile(str filename, FILE *fp){
 
-	char ch ;
-	int i ;
-	float f ;
-	double d ;
+	char ch;
+	int i;
+	float f;
+	double d;
 	FILE *outf;
 
 
