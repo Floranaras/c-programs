@@ -27,3 +27,8 @@ build/
 dist/
 app/
 
+
+# Ignore specific files and folders recursively
+test
+a/
+
