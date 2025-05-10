@@ -1,17 +1,29 @@
-bin/
-obj/
+# VS Code workspace settings
+.vscode/
 
-# macOS app bundles
-*.app/
-
-# macOS metadata
+# macOS system files
 .DS_Store
-.AppleDouble
-.LSOverride
 
-# macOS resource forks
-._*
+# Linux/Unix executables
+*.out
+test
 
-# macOS Spotlight files
-.Spotlight-V100
-.Trashes
+# Windows executables
+*.exe
+
+# Binary files and dumps
+*.bin
+*.dat
+*.obj
+*.class
+*.bak
+
+# Python artifacts (if ever used)
+__pycache__/
+*.pyc
+
+# Common folders to ignore
+build/
+dist/
+app/
+
