@@ -9,12 +9,15 @@ int main()
     int B[] = {4, 3, 4, -8, 31};
     int C[n];
     char S[] = {'C','o','M','p','r','o','2'};
-    int M[5][5] =  {{1, 0 ,0 ,0, 0},
-                    {0, 1, 0, 0 ,0},
-                    {0, 0, 1, 0 ,0},
-                    {0, 0, 0, 1 ,0},
-                    {0, 0, 0, 0, 1}
-                };
+    int M[nROW][nCOLUMN]=  {
+        {1, 2 ,3 ,4, 5},
+        {0, 1, 0, 0 ,0},
+        {0, 0, 1, 0 ,0},
+        {0, 0, 0, 1 ,0},
+        {0, 0, 0, 0, 1}
+    };
+    int T[nROW][nCOLUMN];
+    int P[nROW][nCOLUMN];
 
     // Easy Mode
     printf("IsIncreasingOrder: %d\n", IsIncreasingOrder(A, n));
@@ -31,6 +34,10 @@ int main()
     printf("MaxCopy: ");
     MaxCopy(C, A, B, n);
     printf("IsIdentityMatrix: %d\n", IsIdentityMatrix(M));
-
+    printf("TransposeMatrix: \n");
+    TransposeMatrix(M,T);
+    printf("MultiplyMatrix:\n");
+    MultiplyMatrix(P, M, T);
+    PrintColumnMajorOrder(M);
     return 0;
 }

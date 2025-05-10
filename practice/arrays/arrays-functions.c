@@ -1,5 +1,7 @@
 #define nSIZE (5)
 #define sSIZE (7)
+#define nCOLUMN (5)
+#define nROW (5)
 
 void printArray(char* S, int n)
 {
@@ -23,6 +25,23 @@ void printIntArray(int* A , int n)
     }
     
     printf("\n");
+}
+
+void print2DArray(int A[][nCOLUMN])
+{
+    int i, j; 
+
+    printf("2D Matrix:\n");
+
+    for (i = 0; i < nROW; i++)
+    {
+        for (j = 0; j < nCOLUMN; j++)
+        {
+            printf("%d ", A[i][j]);
+        }
+        
+        printf("\n");
+    }
 }
 
 int IsIncreasingOrder(int* A, int n)
@@ -186,4 +205,56 @@ int IsIdentityMatrix(int M[][5])
     }
 
     return flag;
+}
+
+void TransposeMatrix(int M[][5], int T[][5])
+{
+    int i, j;
+
+    for (i = 0; i < nROW; i++)
+    {
+        for (j = 0; j < nCOLUMN; j++)
+        {
+            T[j][i] = M[i][j];
+        }
+    }
+
+    print2DArray(T);
+}
+
+void MultiplyMatrix(int C[][nCOLUMN], int A[][nCOLUMN], int B[][nCOLUMN])
+{
+    int i, j, k; 
+
+    for (i = 0; i < nROW; i++)
+    {
+        for (j = 0; j < nCOLUMN; j++)
+        {
+            C[i][j] = 0;
+
+            for (k = 0; k < nROW; k++)
+            {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+
+    print2DArray(C);
+}
+
+void PrintColumnMajorOrder(int M[][nCOLUMN])
+{
+    int i, j;
+
+    printf("PrintColumnMajorOrder:\n");
+
+    for (i = 0; i < nCOLUMN; i++)
+    {
+        printf("Column %d: \n", i);
+
+        for (j = 0; j < nROW; j++)
+        {
+            printf("%d\n", M[j][i]);
+        }
+    }
 }
