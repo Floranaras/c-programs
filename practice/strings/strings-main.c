@@ -4,11 +4,9 @@
 
 int main()
 {
-    char str1[13], str2[13];
-    strcpy(str1, "Hello World!");
-
-    char str[21];
-
+    char str1[13], str2[13], str[21];
+    strcpy(str1, "Hello World!"); 
+    String10 friends[NUM_FRIENDS] = {"Jack","John", "Jimmy", "James", "George"};
     problemOne();
 
     printf("PrintReverse: ");
@@ -20,9 +18,8 @@ int main()
     strcpy(str2, Capitalize(str1));
     printf("%s\n", str2);
 
-   GetPassword(str);
-
-
+    GetPassword(str);
+    SortNicknames(friends, NUM_FRIENDS);
 
     return 0;
 }

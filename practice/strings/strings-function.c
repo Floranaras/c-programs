@@ -1,8 +1,10 @@
 #define WORD "POP"
 #define SIZE (13) 
 #define PASSWORD "password"
+#define NUM_FRIENDS (5)
 
 typedef char String7[8];
+typedef char String10[11];
 typedef char String30[31];
 
 
@@ -105,4 +107,37 @@ int GetPassword(char *password)
     } while (!flag && count < 3);
 
     return flag;
+}
+
+void SortNicknames(String10 friends[], int n) 
+{
+
+    int i, j, min_idx;
+    String10 temp;
+
+    for (i = 0; i < n; i++)
+    {
+        min_idx = i;
+        for (j = i + 1; j < n; j++)
+        {
+            if (strcmp(friends[j], friends[i]) < 0)
+            {
+                min_idx = j;
+            }
+        }
+
+        if (min_idx != i)
+        {
+            strcpy(temp, friends[i]);
+            strcpy(friends[i], friends[min_idx]);
+            strcpy(friends[min_idx], temp);
+        }
+    }
+
+    for (i = 0; i < n; i++)
+    {
+        printf("%s ", friends[i]);
+    }
+
+    printf("\n");
 }
