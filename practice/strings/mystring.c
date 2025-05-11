@@ -44,9 +44,11 @@ int mystrcmp(char *str1, char *str2)
 {
 
     int i = 0, flag = 0;
+	int result;
+	int num;
 
 
-    while (str1[i] == '\0' && str2[i] == '\0' && !flag)
+    while (str1[i] != '\0' && str2[i] != '\0' && !flag)
     {
         if (str1[i] != str2[i])
         {
@@ -56,7 +58,28 @@ int mystrcmp(char *str1, char *str2)
         i++; 
     }
 
-    return flag = 1 ? str1[i] - str2[i] : 0;
+	if (flag == 1)
+	{
+		result = str1[i] - str2[i];
+
+		if (result > 0)
+		{
+			num = 1;
+		}
+
+		else if (result < 0)
+		{
+			num = -1;
+		}
+	}
+
+	else if (flag == 0)
+	{
+		num = 0;	
+	}
+
+	return num;
+    //return flag = 1 ? str1[i] - str2[i] : 0;
 }
 
 #include "mystring-test.c"

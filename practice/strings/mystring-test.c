@@ -8,7 +8,7 @@ int main() {
     char str10[11] = {'N','E','K','O'};
 
     printf("\n===STRLEN TEST===\n");
-    printf("string.h: %d\n", strlen(STR));
+    printf("string.h: %lu\n", strlen(STR));
     printf("mystring.c: %d\n", mystrlen(STR));
 
     printf("\n===STRCPY TEST===\n");
@@ -26,8 +26,8 @@ int main() {
 
 
     printf("\n===STRCMP TEST===\n");
-    printf("string.h: %d\n", strcmp("NEKO", "CAT"));
-    printf("mystring.c: %d\n",mystrcmp("NEKO", "CAT"));
+    printf("string.h: %d\n", strcmp("NEKO", "CAR"));
+    printf("mystring.c: %d\n",mystrcmp("NEKO", "CAR"));
 
     return 0;
 }
