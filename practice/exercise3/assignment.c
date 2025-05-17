@@ -1,6 +1,10 @@
 #include <stdio.h>
 #define SIZE (15)
 
+void test()
+{
+    printf("kfdslkj");
+}
 void initArr(int* A)
 {
     int j;
