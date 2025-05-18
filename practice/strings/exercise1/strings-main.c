@@ -21,5 +21,6 @@ int main()
 	printf("isEqual: \n"); 
 	printf("%d\n",isEqual("CAR","NEKO"));
 	printf("%d\n",isEqual("CAR","CAR"));
+
 	return 0;
 }

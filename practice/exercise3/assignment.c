@@ -3,8 +3,8 @@
 
 void test()
 {
-    printf("kfdslkj");
 }
+
 void initArr(int* A)
 {
     int j;
