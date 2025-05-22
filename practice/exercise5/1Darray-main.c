@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "1Darray-functions.c"
 
 int main()

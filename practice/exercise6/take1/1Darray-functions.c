@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #define SIZE (5)
 #define MAX (10)
 
