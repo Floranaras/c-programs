@@ -19,10 +19,9 @@ int isPalendrome(int* numbers, int size)
 
 int isEqual(int* A, int* B, int size)
 {
-	int j = 0;
+	int j;
 
-	while (j < size && A[j] == B[j])
-		j++;
+	for(j = 0; j < size && A[j] == B[j]; j++);
 
 	if (j == size)
 		return 1;
@@ -33,7 +32,7 @@ int isEqual(int* A, int* B, int size)
 int main()
 {
 	int numbers[SIZE] = {3,2,2,2,5};
-	int A[SIZE] = {5,2,2,2,5};
+	int A[SIZE] = {3,2,2,2,5};
 	int B[SIZE] = {5,2,2,2,5};
 
 	if (isEqual(A,B,SIZE))
