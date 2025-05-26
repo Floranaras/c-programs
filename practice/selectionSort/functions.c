@@ -16,18 +16,25 @@ void printArr(int* A, int size)
 
 void selectionSort(int* A, int size)
 {
-	int j, k, temp;
+	int j, k, temp, minIdx;
 
 	for (j = 0; j < size - 1; j++)
 	{
+		minIdx = j;
+
 		for (k = j + 1; k < size; k++)
 		{
-			if (A[j] > A[k])
+			if (A[minIdx] > A[k])
 			{
-				temp = A[j];
-				A[j] = A[k];
-				A[k] = temp;
+				minIdx = k;
 			}
+		}
+
+		if (minIdx != j)
+		{
+			temp = A[j];
+			A[j] = A[minIdx];
+			A[minIdx] = temp;
 		}
 	}
 }
