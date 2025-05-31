@@ -1,15 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef char string10[11];
 typedef char string30[31];
 typedef char string50[51];
 
 
-void sort(string10 words[], int size)
+void sort(string30 words[], int size)
 {
 	int j, k;
-	string10 temp;
+	string30 temp;
 
 	for (j = 0; j < size - 1; j++)
 	{
@@ -26,7 +25,7 @@ void sort(string10 words[], int size)
 	}
 }
 
-void printArr(string10 arr[], int size)
+void printArr(string30 arr[], int size)
 {
 	int j;
 	
