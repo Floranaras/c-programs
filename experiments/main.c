@@ -114,6 +114,7 @@ struct gameDatabaseTag {
     int bTempRedMasterFound;
     int bTempBlueMasterFound;
     int nTempMenuChoice;
+    int bHasValidMoves;
     cardType tempCard;
 };
 typedef struct gameDatabaseTag gameDatabaseType;
@@ -153,7 +154,6 @@ void displayWelcomeMessage();
 void displayShuffleResult(gameDatabaseType* pDb);
 void displayBoard(gameDatabaseType* pDb);
 void displayCardMoves(gameDatabaseType* pDb, int nCardIndex);
-void displayCurrentPlayer(gameDatabaseType* pDb);
 void displayGameResult(gameDatabaseType* pDb);
 void printBoardHeader();
 void printBoardRow(gameDatabaseType* pDb, int nRow);
@@ -175,6 +175,8 @@ void rotateCards(gameDatabaseType* pDb, int nCardIndex);
 void switchPlayer(gameDatabaseType* pDb);
 void processMove(gameDatabaseType* pDb, int nFromRow, int nFromCol, int nToRow, int nToCol, int nCardIndex);
 void handlePlayerInput(gameDatabaseType* pDb);
+void checkForValidMoves(gameDatabaseType* pDb);
+void handleNoValidMoves(gameDatabaseType* pDb);
 void runGameLoop(gameDatabaseType* pDb);
 void runMainLoop(gameDatabaseType* pDb);
 
@@ -184,33 +186,40 @@ int loadCardNames(gameDatabaseType* pDb)
     FILE* pFile;
     int i;
     int nScanResult;
+    int bSuccess;
     
+    bSuccess = TRUE;
     pFile = fopen("movecards.txt", "r");
     if (pFile == NULL) {
         printf("Error: Cannot open movecards.txt\n");
-        return FALSE;
+        bSuccess = FALSE;
     }
     
-    nScanResult = fscanf(pFile, "%d", &pDb->nTotalCards);
-    if (nScanResult != 1 || pDb->nTotalCards > NUM_CARDS) {
-        printf("Error: Invalid card count in movecards.txt\n");
-        fclose(pFile);
-        return FALSE;
-    }
-    
-    i = 0;
-    while (i < pDb->nTotalCards) {
-        nScanResult = fscanf(pFile, "%s", pDb->arrCardNames[i]);
-        if (nScanResult != 1) {
-            printf("Error: Cannot read card name %d\n", i);
-            fclose(pFile);
-            return FALSE;
+    if (bSuccess == TRUE) {
+        nScanResult = fscanf(pFile, "%d", &pDb->nTotalCards);
+        if (nScanResult != 1 || pDb->nTotalCards > NUM_CARDS) {
+            printf("Error: Invalid card count in movecards.txt\n");
+            bSuccess = FALSE;
         }
-        i = i + 1;
     }
     
-    fclose(pFile);
-    return TRUE;
+    if (bSuccess == TRUE) {
+        i = 0;
+        while (i < pDb->nTotalCards && bSuccess == TRUE) {
+            nScanResult = fscanf(pFile, "%s", pDb->arrCardNames[i]);
+            if (nScanResult != 1) {
+                printf("Error: Cannot read card name %d\n", i);
+                bSuccess = FALSE;
+            }
+            i = i + 1;
+        }
+    }
+    
+    if (pFile != NULL) {
+        fclose(pFile);
+    }
+    
+    return bSuccess;
 }
 
 int loadMoveCard(gameDatabaseType* pDb, String20 szCardName, int nCardIndex) 
@@ -225,70 +234,79 @@ int loadMoveCard(gameDatabaseType* pDb, String20 szCardName, int nCardIndex)
     int nPieceRow;
     int nPieceCol;
     int nMoveCount;
+    int bSuccess;
     
+    bSuccess = TRUE;
     strcpy(szFilename, szCardName);
     strcat(szFilename, ".txt");
     
     pFile = fopen(szFilename, "r");
     if (pFile == NULL) {
         printf("Error: Cannot open %s\n", szFilename);
-        return FALSE;
+        bSuccess = FALSE;
     }
     
-    /* Read color */
-    nScanResult = fscanf(pFile, "%s", szColor);
-    if (nScanResult != 1) {
-        printf("Error: Cannot read color from %s\n", szFilename);
-        fclose(pFile);
-        return FALSE;
-    }
-    
-    /* Set card properties */
-    strcpy(pDb->arrAllCards[nCardIndex].szName, szCardName);
-    if (strcmp(szColor, "red") == 0) {
-        pDb->arrAllCards[nCardIndex].nColor = RED;
-    } else {
-        pDb->arrAllCards[nCardIndex].nColor = BLUE;
-    }
-    
-    /* Read grid */
-    i = 0;
-    while (i < BOARD_SIZE) {
-        nScanResult = fscanf(pFile, "%s", arrGrid[i]);
+    if (bSuccess == TRUE) {
+        /* Read color */
+        nScanResult = fscanf(pFile, "%s", szColor);
         if (nScanResult != 1) {
-            printf("Error: Cannot read grid row %d from %s\n", i, szFilename);
-            fclose(pFile);
-            return FALSE;
+            printf("Error: Cannot read color from %s\n", szFilename);
+            bSuccess = FALSE;
         }
-        i = i + 1;
     }
     
-    /* Find piece position and moves - X is at center (2,2) */
-    nPieceRow = 2;
-    nPieceCol = 2;
-    nMoveCount = 0;
-    
-    i = 0;
-    while (i < BOARD_SIZE) {
-        j = 0;
-        while (j < BOARD_SIZE) {
-            if (arrGrid[i][j] == 'x') {
-                if (nMoveCount < MAX_MOVES) {
-                    /* Calculate relative movement from center position */
-                    pDb->arrAllCards[nCardIndex].arrMoves[nMoveCount].nDx = j - nPieceCol;
-                    pDb->arrAllCards[nCardIndex].arrMoves[nMoveCount].nDy = i - nPieceRow;
-                    nMoveCount = nMoveCount + 1;
-                }
+    if (bSuccess == TRUE) {
+        /* Set card properties */
+        strcpy(pDb->arrAllCards[nCardIndex].szName, szCardName);
+        if (strcmp(szColor, "red") == 0) {
+            pDb->arrAllCards[nCardIndex].nColor = RED;
+        } else {
+            pDb->arrAllCards[nCardIndex].nColor = BLUE;
+        }
+        
+        /* Read grid */
+        i = 0;
+        while (i < BOARD_SIZE && bSuccess == TRUE) {
+            nScanResult = fscanf(pFile, "%s", arrGrid[i]);
+            if (nScanResult != 1) {
+                printf("Error: Cannot read grid row %d from %s\n", i, szFilename);
+                bSuccess = FALSE;
             }
-            j = j + 1;
+            i = i + 1;
         }
-        i = i + 1;
     }
     
-    pDb->arrAllCards[nCardIndex].nNumMoves = nMoveCount;
+    if (bSuccess == TRUE) {
+        /* Find piece position and moves - X is at center (2,2) */
+        nPieceRow = 2;
+        nPieceCol = 2;
+        nMoveCount = 0;
+        
+        i = 0;
+        while (i < BOARD_SIZE) {
+            j = 0;
+            while (j < BOARD_SIZE) {
+                if (arrGrid[i][j] == 'x') {
+                    if (nMoveCount < MAX_MOVES) {
+                        /* Calculate relative movement from center position */
+                        pDb->arrAllCards[nCardIndex].arrMoves[nMoveCount].nDx = j - nPieceCol;
+                        pDb->arrAllCards[nCardIndex].arrMoves[nMoveCount].nDy = i - nPieceRow;
+                        nMoveCount = nMoveCount + 1;
+                    }
+                }
+                j = j + 1;
+            }
+            i = i + 1;
+        }
+        
+        pDb->arrAllCards[nCardIndex].nNumMoves = nMoveCount;
+    }
     
-    fclose(pFile);
-    return TRUE;
+    if (pFile != NULL) {
+        fclose(pFile);
+    }
+    
+    return bSuccess;
 }
 
 int loadAllCards(gameDatabaseType* pDb) 
@@ -400,6 +418,7 @@ void initializeTempVariables(gameDatabaseType* pDb)
     pDb->bTempValidMove = FALSE;
     pDb->bTempRedMasterFound = FALSE;
     pDb->bTempBlueMasterFound = FALSE;
+    pDb->bHasValidMoves = TRUE;
 }
 
 void initializeGameDatabase(gameDatabaseType* pDb) 
@@ -621,17 +640,40 @@ void displayShuffleResult(gameDatabaseType* pDb)
 {
     int i;
     
-    printf("Cards have been shuffled!\n");
-    printf("Shuffle result: ");
+    printf("=== Card Shuffling Process ===\n");
+    printf("Available cards: ");
     i = 0;
-    while (i < 5) {
-        printf("%s", pDb->arrAllCards[pDb->arrCardIndices[i]].szName);
-        if (i < 4) {
+    while (i < pDb->nTotalCards) {
+        printf("%s", pDb->arrAllCards[i].szName);
+        if (i < pDb->nTotalCards - 1) {
             printf(", ");
         }
         i = i + 1;
     }
-    printf("\n\n");
+    printf("\n\nShuffling cards...\n");
+    
+    printf("Cards selected for this game:\n");
+    i = 0;
+    while (i < 5) {
+        printf("%d. %s", i + 1, pDb->arrAllCards[pDb->arrCardIndices[i]].szName);
+        if (i < 2) {
+            printf(" (Red player)");
+        } else if (i < 4) {
+            printf(" (Blue player)");
+        } else {
+            printf(" (Neutral card)");
+        }
+        printf("\n");
+        i = i + 1;
+    }
+    
+    printf("\nStarting player: ");
+    if (pDb->neutralCard.nColor == RED) {
+        printf("RED (determined by neutral card: %s)\n", pDb->neutralCard.szName);
+    } else {
+        printf("BLUE (determined by neutral card: %s)\n", pDb->neutralCard.szName);
+    }
+    printf("\n");
 }
 
 void printBoardHeader() 
@@ -644,20 +686,13 @@ void printBoardRow(gameDatabaseType* pDb, int nRow)
 {
     int j;
     char cPiece;
-    char cBackground;
 
     printf("%d |", nRow);
     j = 0;
     while (j < BOARD_SIZE) {
         cPiece = ' ';
-        cBackground = ' ';
         
-        /* Check for temple positions */
-        if ((nRow == 0 && j == 2) || (nRow == 4 && j == 2)) {
-            cBackground = 'T'; /* Temple marker */
-        }
-        
-        /* Check for pieces */
+        /* Check for pieces first */
         if (pDb->arrBoard[nRow][j] == RED_PAWN) {
             cPiece = 'r';
         } else if (pDb->arrBoard[nRow][j] == RED_MASTER) {
@@ -667,7 +702,12 @@ void printBoardRow(gameDatabaseType* pDb, int nRow)
         } else if (pDb->arrBoard[nRow][j] == BLUE_MASTER) {
             cPiece = 'B';
         } else {
-            cPiece = cBackground;
+            /* Show temple positions when empty */
+            if (nRow == 0 && j == 2) {
+                cPiece = '*'; /* Red temple (Blue's target) */
+            } else if (nRow == 4 && j == 2) {
+                cPiece = '*'; /* Blue temple (Red's target) */
+            }
         }
         
         printf(" %c |", cPiece);
@@ -678,7 +718,7 @@ void printBoardRow(gameDatabaseType* pDb, int nRow)
 
 void printGameInfo(gameDatabaseType* pDb) 
 {
-    printf("\nPlayer Cards:\n");
+    printf("\nGame Status:\n");
     printf("RED (%s): %s, %s\n", 
            pDb->szRedPlayerName,
            pDb->arrPlayerCards[RED][0].szName, 
@@ -688,6 +728,11 @@ void printGameInfo(gameDatabaseType* pDb)
            pDb->arrPlayerCards[BLUE][0].szName, 
            pDb->arrPlayerCards[BLUE][1].szName);
     printf("Neutral Card: %s\n", pDb->neutralCard.szName);
+    
+    printf("\nWin Conditions:\n");
+    printf("- Capture opponent's master (R or B)\n");
+    printf("- Reach opponent's temple (*)\n");
+    printf("  RED wins by reaching (4,2) | BLUE wins by reaching (0,2)\n");
 }
 
 void displayBoard(gameDatabaseType* pDb) 
@@ -772,15 +817,6 @@ void displayCardMoves(gameDatabaseType* pDb, int nCardIndex)
     }
 }
 
-void displayCurrentPlayer(gameDatabaseType* pDb) 
-{
-    if (pDb->nCurrentPlayer == RED) {
-        printf("\n%s's turn (RED)\n", pDb->szRedPlayerName);
-    } else {
-        printf("\n%s's turn (BLUE)\n", pDb->szBluePlayerName);
-    }
-}
-
 void displayPlayerTurnMenu(gameDatabaseType* pDb) 
 {
     if (pDb->nCurrentPlayer == RED) {
@@ -800,6 +836,7 @@ void displayOpponentCards(gameDatabaseType* pDb)
 {
     int nOpponent;
     int i;
+    int j;
     cardType* pCard;
     
     printf("\n\n");
@@ -819,7 +856,7 @@ void displayOpponentCards(gameDatabaseType* pDb)
         
         /* Show card pattern from opponent's perspective */
         printCardHeader(pCard);
-        int j = -2;
+        j = -2;
         while (j <= 2) {
             printCardMoveRow(pCard, nOpponent, j);
             j = j + 1;
@@ -828,11 +865,14 @@ void displayOpponentCards(gameDatabaseType* pDb)
     }
     
     printf("\nPress Enter to continue...");
-    getchar();
+    scanf("%*[^\n]");
+    scanf("%*c");
 }
 
 void displayNeutralCard(gameDatabaseType* pDb) 
 {
+    int i;
+    
     printf("\n\n");
     
     printf("=== Neutral Card ===\n");
@@ -843,14 +883,15 @@ void displayNeutralCard(gameDatabaseType* pDb)
     printCardHeader(&pDb->neutralCard);
     
     /* Show pattern from current player's perspective */
-    int i = -2;
+    i = -2;
     while (i <= 2) {
         printCardMoveRow(&pDb->neutralCard, pDb->nCurrentPlayer, i);
         i = i + 1;
     }
     
     printf("\nPress Enter to continue...");
-    getchar();
+    scanf("%*[^\n]");
+    scanf("%*c");
 }
 
 void displayMyCards(gameDatabaseType* pDb) 
@@ -873,27 +914,40 @@ void displayMyCards(gameDatabaseType* pDb)
     }
     
     printf("\nPress Enter to continue...");
-    getchar();
+    scanf("%*[^\n]");
+    scanf("%*c");
 }
 
 void displayGameResult(gameDatabaseType* pDb) 
 {
     displayBoard(pDb);
-    printf("\n=== GAME OVER ===\n");
+    printf("\n");
+    printf("========================================\n");
+    printf("              GAME OVER!                \n");
+    printf("========================================\n");
     
     if (pDb->nWinner == RED) {
-        printf("Winner: %s (RED)\n", pDb->szRedPlayerName);
+        printf("🏆 Winner: %s (RED)\n", pDb->szRedPlayerName);
     } else {
-        printf("Winner: %s (BLUE)\n", pDb->szBluePlayerName);
+        printf("🏆 Winner: %s (BLUE)\n", pDb->szBluePlayerName);
     }
     
     if (pDb->nWinCondition == WIN_CAPTURE) {
-        printf("Victory by: Master Capture\n");
+        printf("Victory Condition: Master Capture\n");
+        printf("The opponent's master was captured!\n");
     } else {
-        printf("Victory by: Temple Occupation\n");
+        printf("Victory Condition: Temple Occupation\n");
+        if (pDb->nWinner == RED) {
+            printf("Red master reached Blue's temple at (4,2)!\n");
+        } else {
+            printf("Blue master reached Red's temple at (0,2)!\n");
+        }
     }
     
-    printf("Total moves: %d\n", pDb->nMoveCount);
+    printf("Game Statistics:\n");
+    printf("- Total moves played: %d\n", pDb->nMoveCount);
+    printf("- Average moves per player: %.1f\n", (float)pDb->nMoveCount / 2.0);
+    printf("========================================\n");
 }
 
 /* Input Functions */
@@ -1036,32 +1090,22 @@ void processMove(gameDatabaseType* pDb, int nFromRow, int nFromCol, int nToRow, 
     pDb->bTempValidMove = TRUE;
 
     validatePositions(pDb, nFromRow, nFromCol, nToRow, nToCol);
-    if (pDb->bTempValidMove == FALSE) {
-        return;
-    }
-    
-    validatePieceOwnership(pDb, nFromRow, nFromCol);
-    if (pDb->bTempValidMove == FALSE) {
-        return;
-    }
-    
-    validateDestination(pDb, nToRow, nToCol);
-    if (pDb->bTempValidMove == FALSE) {
-        return;
-    }
-    
-    validateCardMove(pDb, nFromRow, nFromCol, nToRow, nToCol, nCardIndex);
-    if (pDb->bTempValidMove == FALSE) {
-        return;
-    }
-
     if (pDb->bTempValidMove == TRUE) {
-        recordMove(pDb, nFromRow, nFromCol, nToRow, nToCol, nCardIndex);
-        executeMove(pDb, nFromRow, nFromCol, nToRow, nToCol);
-        rotateCards(pDb, nCardIndex);
-        checkForVictory(pDb);
-        if (pDb->bGameOver == FALSE) {
-            switchPlayer(pDb);
+        validatePieceOwnership(pDb, nFromRow, nFromCol);
+        if (pDb->bTempValidMove == TRUE) {
+            validateDestination(pDb, nToRow, nToCol);
+            if (pDb->bTempValidMove == TRUE) {
+                validateCardMove(pDb, nFromRow, nFromCol, nToRow, nToCol, nCardIndex);
+                if (pDb->bTempValidMove == TRUE) {
+                    recordMove(pDb, nFromRow, nFromCol, nToRow, nToCol, nCardIndex);
+                    executeMove(pDb, nFromRow, nFromCol, nToRow, nToCol);
+                    rotateCards(pDb, nCardIndex);
+                    checkForVictory(pDb);
+                    if (pDb->bGameOver == FALSE) {
+                        switchPlayer(pDb);
+                    }
+                }
+            }
         }
     }
 }
@@ -1072,70 +1116,58 @@ void handlePlayerInput(gameDatabaseType* pDb)
     int bValidMove;
     int bFirstTime;
     
-    bMadeMove = FALSE;
-    bFirstTime = TRUE;
+    /* Check if player has any valid moves */
+    checkForValidMoves(pDb);
     
-    /* Keep showing menu until player makes a move */
-    while (bMadeMove == FALSE) {
-        /* Only show board on first time or after clearing */
-        if (bFirstTime == TRUE) {
-            displayBoard(pDb);
-            bFirstTime = FALSE;
-        }
+    if (pDb->bHasValidMoves == FALSE) {
+        handleNoValidMoves(pDb);
+    } else {
+        bMadeMove = FALSE;
+        bFirstTime = TRUE;
         
-        getPlayerTurnChoice(pDb);
-        
-        if (pDb->nTempMenuChoice == MAKE_MOVE) {
-            /* Step 1: Player chooses a card */
-            getCardChoice(pDb);
-            
-            /* Step 2: Show the card pattern */
-            printf("\n");
-            displayCardMoves(pDb, pDb->nTempCardChoice);
-            
-            /* Step 3: Player makes moves until they get a valid one */
-            bValidMove = FALSE;
-            while (bValidMove == FALSE) {
-                getMoveInput(pDb);
-                if (pDb->bTempValidMove == TRUE) {
-                    bValidMove = TRUE;
-                    bMadeMove = TRUE;
-                } else {
-                    printf("\nThat move doesn't work with the %s card. Try again!\n", 
-                           pDb->arrPlayerCards[pDb->nCurrentPlayer][pDb->nTempCardChoice].szName);
-                    printf("Remember: S = your piece position, X = where it can move\n\n");
-                }
+        /* Keep showing menu until player makes a move */
+        while (bMadeMove == FALSE) {
+            /* Only show board on first time or after clearing */
+            if (bFirstTime == TRUE) {
+                displayBoard(pDb);
+                bFirstTime = FALSE;
             }
-        } else if (pDb->nTempMenuChoice == VIEW_OPPONENT_CARDS) {
-            displayOpponentCards(pDb);
-        } else if (pDb->nTempMenuChoice == VIEW_NEUTRAL_CARD) {
-            displayNeutralCard(pDb);
-        } else if (pDb->nTempMenuChoice == VIEW_MY_CARDS) {
-            displayMyCards(pDb);
-        } else if (pDb->nTempMenuChoice == CLEAR_AND_SHOW_BOARD) {
-            system("clear");
-            displayBoard(pDb);
+            
+            getPlayerTurnChoice(pDb);
+            
+            if (pDb->nTempMenuChoice == MAKE_MOVE) {
+                /* Step 1: Player chooses a card */
+                getCardChoice(pDb);
+                
+                /* Step 2: Show the card pattern */
+                printf("\n");
+                displayCardMoves(pDb, pDb->nTempCardChoice);
+                
+                /* Step 3: Player makes moves until they get a valid one */
+                bValidMove = FALSE;
+                while (bValidMove == FALSE) {
+                    getMoveInput(pDb);
+                    if (pDb->bTempValidMove == TRUE) {
+                        bValidMove = TRUE;
+                        bMadeMove = TRUE;
+                    } else {
+                        printf("\nThat move doesn't work with the %s card. Try again!\n", 
+                               pDb->arrPlayerCards[pDb->nCurrentPlayer][pDb->nTempCardChoice].szName);
+                        printf("Remember: S = your piece position, X = where it can move\n\n");
+                    }
+                }
+            } else if (pDb->nTempMenuChoice == VIEW_OPPONENT_CARDS) {
+                displayOpponentCards(pDb);
+            } else if (pDb->nTempMenuChoice == VIEW_NEUTRAL_CARD) {
+                displayNeutralCard(pDb);
+            } else if (pDb->nTempMenuChoice == VIEW_MY_CARDS) {
+                displayMyCards(pDb);
+            } else if (pDb->nTempMenuChoice == CLEAR_AND_SHOW_BOARD) {
+                system("clear");
+                displayBoard(pDb);
+            }
         }
     }
-}
-
-void runGameLoop(gameDatabaseType* pDb) 
-{
-    printf("\n");
-    displayWelcomeMessage();
-    getPlayerNames(pDb);
-    
-    printf("\n");
-    displayShuffleResult(pDb);
-    printf("Press Enter to start the game...");
-    getchar();
-
-    while (pDb->bGameOver == FALSE) {
-        handlePlayerInput(pDb);
-    }
-
-    printf("\n");
-    displayGameResult(pDb);
 }
 
 void runMainLoop(gameDatabaseType* pDb) 
@@ -1164,6 +1196,110 @@ void runMainLoop(gameDatabaseType* pDb)
             bRunning = FALSE;
         }
     }
+}
+
+void runGameLoop(gameDatabaseType* pDb) 
+{
+    printf("\n");
+    displayWelcomeMessage();
+    getPlayerNames(pDb);
+    
+    printf("\n");
+    displayShuffleResult(pDb);
+    printf("Press Enter to start the game...");
+    scanf("%*[^\n]");
+    scanf("%*c");
+
+    while (pDb->bGameOver == FALSE) {
+        handlePlayerInput(pDb);
+    }
+
+    printf("\n");
+    displayGameResult(pDb);
+}
+
+void checkForValidMoves(gameDatabaseType* pDb) 
+{
+    int nPieceRow;
+    int nPieceCol;
+    int nDestRow;
+    int nDestCol;
+    int nCardIndex;
+    int nMoveIndex;
+    int nCardDx;
+    int nCardDy;
+    cardType* pCard;
+    
+    pDb->bHasValidMoves = FALSE;
+    
+    /* Check both cards */
+    nCardIndex = 0;
+    while (nCardIndex < CARDS_PER_PLAYER && pDb->bHasValidMoves == FALSE) {
+        pCard = &pDb->arrPlayerCards[pDb->nCurrentPlayer][nCardIndex];
+        
+        /* Check all pieces on board */
+        nPieceRow = 0;
+        while (nPieceRow < BOARD_SIZE && pDb->bHasValidMoves == FALSE) {
+            nPieceCol = 0;
+            while (nPieceCol < BOARD_SIZE && pDb->bHasValidMoves == FALSE) {
+                /* Check if this is player's piece */
+                if ((pDb->nCurrentPlayer == RED && (pDb->arrBoard[nPieceRow][nPieceCol] == RED_PAWN || pDb->arrBoard[nPieceRow][nPieceCol] == RED_MASTER)) ||
+                    (pDb->nCurrentPlayer == BLUE && (pDb->arrBoard[nPieceRow][nPieceCol] == BLUE_PAWN || pDb->arrBoard[nPieceRow][nPieceCol] == BLUE_MASTER))) {
+                    
+                    /* Check all moves for this card */
+                    nMoveIndex = 0;
+                    while (nMoveIndex < pCard->nNumMoves && pDb->bHasValidMoves == FALSE) {
+                        nCardDx = pCard->arrMoves[nMoveIndex].nDx;
+                        nCardDy = pCard->arrMoves[nMoveIndex].nDy;
+                        
+                        /* Adjust for player perspective */
+                        if (pDb->nCurrentPlayer == RED) {
+                            nCardDx = -nCardDx;
+                            nCardDy = -nCardDy;
+                        } else {
+                            nCardDx = -nCardDx;
+                            nCardDy = -nCardDy;
+                        }
+                        
+                        nDestRow = nPieceRow + nCardDy;
+                        nDestCol = nPieceCol + nCardDx;
+                        
+                        /* Check if destination is valid */
+                        if (nDestRow >= 0 && nDestRow < BOARD_SIZE && nDestCol >= 0 && nDestCol < BOARD_SIZE) {
+                            /* Check if destination is not occupied by own piece */
+                            if ((pDb->nCurrentPlayer == RED && pDb->arrBoard[nDestRow][nDestCol] != RED_PAWN && pDb->arrBoard[nDestRow][nDestCol] != RED_MASTER) ||
+                                (pDb->nCurrentPlayer == BLUE && pDb->arrBoard[nDestRow][nDestCol] != BLUE_PAWN && pDb->arrBoard[nDestRow][nDestCol] != BLUE_MASTER)) {
+                                pDb->bHasValidMoves = TRUE;
+                            }
+                        }
+                        
+                        nMoveIndex = nMoveIndex + 1;
+                    }
+                }
+                nPieceCol = nPieceCol + 1;
+            }
+            nPieceRow = nPieceRow + 1;
+        }
+        nCardIndex = nCardIndex + 1;
+    }
+}
+
+void handleNoValidMoves(gameDatabaseType* pDb) 
+{
+    printf("\nNo valid moves available with either card!\n");
+    printf("You must still play a card to pass your turn.\n");
+    
+    getCardChoice(pDb);
+    printf("Playing %s card and passing turn...\n", 
+           pDb->arrPlayerCards[pDb->nCurrentPlayer][pDb->nTempCardChoice].szName);
+    
+    /* Rotate cards but don't move any piece */
+    rotateCards(pDb, pDb->nTempCardChoice);
+    switchPlayer(pDb);
+    
+    printf("Press Enter to continue...");
+    scanf("%*[^\n]");
+    scanf("%*c");
 }
 
 int main() 
