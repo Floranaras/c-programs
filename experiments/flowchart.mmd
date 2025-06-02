@@ -1,0 +1,104 @@
+flowchart TD
+    A[main] --> B[srand - seed random]
+    B --> C[runMainLoop]
+    
+    C --> D[loadAllCards]
+    D --> D1[loadCardNames]
+    D1 --> D2[loadMoveCard - for each card]
+    
+    C --> E{Main Menu Loop}
+    E --> F[getMenuChoice]
+    F --> G[displayMenu]
+    F --> H{Choice?}
+    
+    H -->|1 - Start Game| I[initializeGameDatabase]
+    H -->|2 - Exit| J[Exit Program]
+    
+    I --> I1[initializeBoard]
+    I --> I2[placePieces]
+    I --> I3[shuffleCardIndices]
+    I --> I4[dealCards]
+    I --> I5[initializeTempVariables]
+    
+    I --> K[runGameLoop]
+    
+    K --> K1[displayWelcomeMessage]
+    K --> K2[getPlayerNames]
+    K --> K3[displayShuffleResult]
+    
+    K --> L{Game Loop - while not game over}
+    
+    L --> M[handlePlayerInput]
+    
+    M --> M1[checkForValidMoves]
+    M1 --> M2{Has Valid Moves?}
+    
+    M2 -->|No| N[handleNoValidMoves]
+    N --> N1[getCardChoice]
+    N --> N2[rotateCards]
+    N --> N3[switchPlayer]
+    
+    M2 -->|Yes| O{Player Menu Loop}
+    
+    O --> P[getPlayerTurnChoice]
+    P --> P1[displayPlayerTurnMenu]
+    P --> Q{Menu Choice?}
+    
+    Q -->|1 - Make Move| R[Make Move Process]
+    Q -->|2 - View Opponent Cards| S[displayOpponentCards]
+    Q -->|3 - View Neutral Card| T[displayNeutralCard]
+    Q -->|4 - View My Cards| U[displayMyCards]
+    Q -->|5 - Clear Screen| V[displayBoard]
+    
+    S --> O
+    T --> O
+    U --> O
+    V --> O
+    
+    R --> R1[getCardChoice]
+    R --> R2[displayCardMoves]
+    R --> R3{Move Input Loop}
+    
+    R3 --> R4[getMoveInput]
+    R4 --> R5[processMove]
+    
+    R5 --> R6[validatePositions]
+    R6 --> R6a[checkValidPosition - from]
+    R6a --> R6b[checkValidPosition - to]
+    
+    R5 --> R7[validatePieceOwnership]
+    R7 --> R7a[checkOwnPiece]
+    
+    R5 --> R8[validateDestination]
+    R8 --> R8a[checkOwnPiece - destination check]
+    
+    R5 --> R9[validateCardMove]
+    R9 --> R9a[Check if move matches card pattern]
+    
+    R5 --> R10{Valid Move?}
+    
+    R10 -->|No| R11[Show error message]
+    R11 --> R3
+    
+    R10 -->|Yes| R12[recordMove]
+    R12 --> R13[executeMove]
+    R13 --> R14[rotateCards]
+    R14 --> R15[checkForVictory]
+    
+    R15 --> R16[checkTempleWin]
+    R15 --> R17[checkMasterCapture]
+    
+    R15 --> R18{Game Over?}
+    
+    R18 -->|No| R19[switchPlayer]
+    R19 --> L
+    
+    R18 -->|Yes| W[displayGameResult]
+    W --> X[Back to Main Menu]
+    X --> E
+    
+    style A fill:#4CAF50,stroke:#2E7D32,stroke-width:3px,color:#fff
+    style C fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
+    style K fill:#FF9800,stroke:#E65100,stroke-width:3px,color:#fff
+    style M fill:#9C27B0,stroke:#6A1B9A,stroke-width:3px,color:#fff
+    style R fill:#F44336,stroke:#C62828,stroke-width:3px,color:#fff
