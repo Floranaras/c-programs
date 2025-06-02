@@ -26,8 +26,7 @@
 struct moveTag {
     int nDx;
     int nDy;
-};
-typedef struct moveTag moveType;
+}; typedef struct moveTag moveType;
 
 /* Card structure */
 struct cardTag {
