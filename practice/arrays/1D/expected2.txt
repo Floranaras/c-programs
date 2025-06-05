@@ -1,0 +1,13 @@
+-71 52 -55 -62 85 45 33 0 -51 7 -48 -32 -58 -21 18 -12 -8 54 -34 93 
+Array Size: 20
+
+Min: -71
+Max: 93
+Sum: -65
+Average: -3.25
+# of Positive: 8
+# of Negative: 11
+# of Odd: 9
+# of Even: 11
+isInList-63: N
+isInList-45: Y

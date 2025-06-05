@@ -1,0 +1,160 @@
++----------------------------------+
+| TASK #1: Populate Student Matrix |
++----------------------------------+
+
+  NOTE: Only Task #1 will use the content of the input file.
+    For the next tasks, input for the test cases are hardcoded.
+
+idx | STUDENT    | COURSE #1  | COURSE #2  | COURSE #3  | COURSE #4  | COURSE #5 
+--- + ---------- + ---------- + ---------- + ---------- + ---------- + ----------
+  0 | Alice      | CCPROG2    | CSMATH1    | CCDSTRU    | _          | _         
+  1 | Bob        | CCPROG2    | GEUSELF    | _          | _          | _         
+  2 | Charlie    | CCDSTRU    | GEARTAP    | LASARE1    | NSTP-01    | GEMATMW   
+  3 | Darwin     | _          | _          | _          | _          | _         
+  4 | Evan       | CCPROG3    | _          | _          | _          | _         
+
+
+
++-----------------------------------+
+| TASK #2: Search Student In Matrix |
++-----------------------------------+
+
+  +--------------------+
+  | MATRIX for TASK #2 |
+  +--------------------+
+
+idx | STUDENT    | COURSE #1  | COURSE #2  | COURSE #3  | COURSE #4  | COURSE #5 
+--- + ---------- + ---------- + ---------- + ---------- + ---------- + ----------
+  0 | Alice      | CCPROG2    | CSMATH1    | CCDSTRU    | _          | _         
+  1 | Bob        | CCPROG2    | GEUSELF    | _          | _          | _         
+  2 | Charlie    | CCDSTRU    | GEARTAP    | LASARE1    | NSTP-01    | GEMATMW   
+  3 | Darwin     | _          | _          | _          | _          | _         
+  4 | Evan       | CCPROG3    | _          | _          | _          | _         
+  5 | Faye       | CSMATH2    | GEFIL1     | LCFAITH    | _          | _         
+  6 | George     | SAS1000    | CCPROG3    | _          | _          | _         
+  7 | Henry      | CCICOMP    | STT101A    | NSTP101    | CCPROG1    | _         
+  8 | Ina        | CCDSALG    | LCLSONE    | _          | _          | _         
+
+
+  TEST CASE #1: First element
+  ----------------------------
+  Is 'Alice' in the matrix?: Yes, at idx = 0
+
+
+  TEST CASE #2: Middle element
+  ----------------------------
+  Is 'Evan' in the matrix?: Yes, at idx = 4
+
+
+  TEST CASE #3: Last element
+  ---------------------------
+  Is 'Ina' in the matrix?: Yes, at idx = 8
+
+
+  TEST CASE #4: Not in matrix
+  ---------------------------
+  Is 'Kristoff' in the matrix?: No (idx = -1)
+
+
+
++---------------------------------------+
+| TASK #3: Add Course To Student Record |
++---------------------------------------+
+
+  +-----------------------------+
+  | MATRIX for TASK #3 (before) |
+  +-----------------------------+
+
+idx | STUDENT    | COURSE #1  | COURSE #2  | COURSE #3  | COURSE #4  | COURSE #5 
+--- + ---------- + ---------- + ---------- + ---------- + ---------- + ----------
+  0 | Alice      | CCPROG2    | CSMATH1    | CCDSTRU    | _          | _         
+  1 | Bob        | CCPROG2    | GEUSELF    | _          | _          | _         
+  2 | Charlie    | CCDSTRU    | GEARTAP    | LASARE1    | NSTP-01    | GEMATMW   
+  3 | Darwin     | _          | _          | _          | _          | _         
+  4 | Evan       | CCPROG3    | _          | _          | _          | _         
+  5 | Faye       | CSMATH2    | GEFIL1     | LCFAITH    | _          | _         
+  6 | George     | SAS1000    | CCPROG3    | _          | _          | _         
+  7 | Henry      | CCICOMP    | STT101A    | NSTP101    | CCPROG1    | _         
+  8 | Ina        | CCDSALG    | LCLSONE    | _          | _          | _         
+
+
+  TEST CASE #1: Student Exists, Add to First Course Slot
+  ------------------------------------------------------
+  Adding '<< NEW >>' to Darwin's student record: [1] Student found! Successfully added course!
+
+
+  TEST CASE #2: Student Exists, Add to Middle Course Slot
+  -------------------------------------------------------
+  Adding '<< NEW >>' to Bob's student record: [1] Student found! Successfully added course!
+
+
+  TEST CASE #3: Student Exists, Add to Last Course Slot
+  -----------------------------------------------------
+  Adding '<< NEW >>' to Henry's student record: [1] Student found! Successfully added course!
+
+
+  TEST CASE #4: Student Exists, No More Course Slots
+  --------------------------------------------------
+  Adding '<< NEW >>' to Charlie's student record: [0] Student found! No more free course slots...
+
+
+  TEST CASE #5: Student Does Not Exist
+  ------------------------------------
+  Adding '<< NEW >>' to Kristoff's student record: [-1] Student does not exist!
+
+
+  +----------------------------+
+  | MATRIX for TASK #3 (after) |
+  +----------------------------+
+
+idx | STUDENT    | COURSE #1  | COURSE #2  | COURSE #3  | COURSE #4  | COURSE #5 
+--- + ---------- + ---------- + ---------- + ---------- + ---------- + ----------
+  0 | Alice      | CCPROG2    | CSMATH1    | CCDSTRU    | _          | _         
+  1 | Bob        | CCPROG2    | GEUSELF    | << NEW >>  | _          | _         
+  2 | Charlie    | CCDSTRU    | GEARTAP    | LASARE1    | NSTP-01    | GEMATMW   
+  3 | Darwin     | << NEW >>  | _          | _          | _          | _         
+  4 | Evan       | CCPROG3    | _          | _          | _          | _         
+  5 | Faye       | CSMATH2    | GEFIL1     | LCFAITH    | _          | _         
+  6 | George     | SAS1000    | CCPROG3    | _          | _          | _         
+  7 | Henry      | CCICOMP    | STT101A    | NSTP101    | CCPROG1    | << NEW >> 
+  8 | Ina        | CCDSALG    | LCLSONE    | _          | _          | _         
+
+
+
++-----------------------+
+| TASK #4: Sort Courses |
++-----------------------+
+
+  +-----------------------------+
+  | MATRIX for TASK #4 (before) |
+  +-----------------------------+
+
+idx | STUDENT    | COURSE #1  | COURSE #2  | COURSE #3  | COURSE #4  | COURSE #5 
+--- + ---------- + ---------- + ---------- + ---------- + ---------- + ----------
+  0 | Alice      | CCPROG2    | CSMATH1    | CCDSTRU    | _          | _         
+  1 | Bob        | CCPROG2    | GEUSELF    | _          | _          | _         
+  2 | Charlie    | CCDSTRU    | GEARTAP    | LASARE1    | NSTP-01    | GEMATMW   
+  3 | Darwin     | _          | _          | _          | _          | _         
+  4 | Evan       | CCPROG3    | _          | _          | _          | _         
+  5 | Faye       | CSMATH2    | GEFIL1     | LCFAITH    | _          | _         
+  6 | George     | SAS1000    | CCPROG3    | _          | _          | _         
+  7 | Henry      | CCICOMP    | STT101A    | NSTP101    | CCPROG1    | _         
+  8 | Ina        | CCDSALG    | LCLSONE    | _          | _          | _         
+
+
+  +----------------------------+
+  | MATRIX for TASK #4 (after) |
+  +----------------------------+
+
+idx | STUDENT    | COURSE #1  | COURSE #2  | COURSE #3  | COURSE #4  | COURSE #5 
+--- + ---------- + ---------- + ---------- + ---------- + ---------- + ----------
+  0 | Alice      | CCDSTRU    | CCPROG2    | CSMATH1    | _          | _         
+  1 | Bob        | CCPROG2    | GEUSELF    | _          | _          | _         
+  2 | Charlie    | CCDSTRU    | GEARTAP    | GEMATMW    | LASARE1    | NSTP-01   
+  3 | Darwin     | _          | _          | _          | _          | _         
+  4 | Evan       | CCPROG3    | _          | _          | _          | _         
+  5 | Faye       | CSMATH2    | GEFIL1     | LCFAITH    | _          | _         
+  6 | George     | CCPROG3    | SAS1000    | _          | _          | _         
+  7 | Henry      | CCICOMP    | CCPROG1    | NSTP101    | STT101A    | _         
+  8 | Ina        | CCDSALG    | LCLSONE    | _          | _          | _         
+

@@ -1,0 +1,80 @@
+Filled Box:
+x x x x x x x 
+x x x x x x x 
+x x x x x x x 
+x x x x x x x 
+x x x x x x x 
+x x x x x x x 
+x x x x x x x 
+
+Number Grid #1:
+   1    1    1    1    1    1    1 
+   2    2    2    2    2    2    2 
+   3    3    3    3    3    3    3 
+   4    4    4    4    4    4    4 
+   5    5    5    5    5    5    5 
+   6    6    6    6    6    6    6 
+   7    7    7    7    7    7    7 
+
+Number Grid #2:
+   1    2    3    4    5    6    7 
+   1    2    3    4    5    6    7 
+   1    2    3    4    5    6    7 
+   1    2    3    4    5    6    7 
+   1    2    3    4    5    6    7 
+   1    2    3    4    5    6    7 
+   1    2    3    4    5    6    7 
+
+Multiplication Table:
+   1    2    3    4    5    6    7 
+   2    4    6    8   10   12   14 
+   3    6    9   12   15   18   21 
+   4    8   12   16   20   24   28 
+   5   10   15   20   25   30   35 
+   6   12   18   24   30   36   42 
+   7   14   21   28   35   42   49 
+
+Hollow Box:
+x x x x x x x 
+x           x 
+x           x 
+x           x 
+x           x 
+x           x 
+x x x x x x x 
+
+Left Pyramid:
+x             
+x x           
+x x x         
+x x x x       
+x x x x x     
+x x x x x x   
+x x x x x x x 
+
+Inverted Left Pyramid:
+x x x x x x x 
+x x x x x x   
+x x x x x     
+x x x x       
+x x x         
+x x           
+x             
+
+Right Pyramid:
+            x 
+          x x 
+        x x x 
+      x x x x 
+    x x x x x 
+  x x x x x x 
+x x x x x x x 
+
+Inverted Right Pyramid:
+x x x x x x x 
+  x x x x x x 
+    x x x x x 
+      x x x x 
+        x x x 
+          x x 
+            x 

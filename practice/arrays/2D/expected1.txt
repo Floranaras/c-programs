@@ -1,0 +1,44 @@
+Filled Box:
+x x x 
+x x x 
+x x x 
+
+Number Grid #1:
+   1    1    1 
+   2    2    2 
+   3    3    3 
+
+Number Grid #2:
+   1    2    3 
+   1    2    3 
+   1    2    3 
+
+Multiplication Table:
+   1    2    3 
+   2    4    6 
+   3    6    9 
+
+Hollow Box:
+x x x 
+x   x 
+x x x 
+
+Left Pyramid:
+x     
+x x   
+x x x 
+
+Inverted Left Pyramid:
+x x x 
+x x   
+x     
+
+Right Pyramid:
+    x 
+  x x 
+x x x 
+
+Inverted Right Pyramid:
+x x x 
+  x x 
+    x 
