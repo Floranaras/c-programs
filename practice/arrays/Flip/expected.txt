@@ -1,0 +1,219 @@
++------------------------------+
+| TASK #1: Draw Card from Deck |
++------------------------------+
+
+  TEST CASE #1: Full Deck
+  -----------------------
+
+  Deck (before): 9 4 7 5 4 3 7 7 9 4 8 7 6 1 6 
+   Deck (after): 4 7 5 4 3 7 7 9 4 8 7 6 1 6 0 
+     Drawn Card: 9
+
+
+  TEST CASE #2: Partial Deck
+  --------------------------
+
+  Deck (before): 5 7 9 9 3 8 8 9 0 0 0 0 0 0 0 
+   Deck (after): 7 9 9 3 8 8 9 0 0 0 0 0 0 0 0 
+     Drawn Card: 5
+
+
+  TEST CASE #3: Last Card In Deck
+  -------------------------------
+
+  Deck (before): 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+   Deck (after): 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+     Drawn Card: 3
+
+
+
++----------------------------------+
+| TASK #2: Check If Exists in Hand |
++----------------------------------+
+
+  TEST CASE #1: Empty Hand
+  ------------------------
+
+  Is '4' already in { 0 0 0 0 0 0 0 } ?
+  Result: 0
+
+
+  TEST CASE #2: Card Exists at 1st Element
+  ----------------------------------------
+
+  Is '1' already in { 1 8 7 6 3 0 0 } ?
+  Result: 1
+
+
+  TEST CASE #3: Card Exists at Middle Element
+  -------------------------------------------
+
+  Is '7' already in { 1 8 7 6 3 0 0 } ?
+  Result: 1
+
+
+  TEST CASE #4: Card Exists at 'Last' Element
+  -------------------------------------------
+
+  Is '3' already in { 1 8 7 6 3 0 0 } ?
+  Result: 1
+
+
+  TEST CASE #5: Card Does Not Exist
+  ---------------------------------
+
+  Is '5' already in { 1 8 7 6 3 0 0 } ?
+  Result: 0
+
+
+
++---------------------------+
+| TASK #3: Add Card to Hand |
++---------------------------+
+
+  Adding '9' to the player hand...
+
+
+  TEST CASE #1: Empty Hand
+  ------------------------
+
+  Player Hand (before): 0 0 0 0 0 0 0 
+   Player Hand (after): 9 0 0 0 0 0 0 
+
+
+  TEST CASE #2: Partial Hand
+  --------------------------
+
+  Player Hand (before): 1 7 6 3 0 0 0 
+   Player Hand (after): 1 7 6 3 9 0 0 
+
+
+  TEST CASE #3: Almost Full Hand
+  ------------------------------
+
+  Player Hand (before): 8 2 5 4 3 6 0 
+   Player Hand (after): 8 2 5 4 3 6 9 
+
+
+
++--------------------+
+| TASK #4: Get Score |
++--------------------+
+
+  TEST CASE #1: Empty Hand
+  ------------------------
+
+  Player Hand: 0 0 0 0 0 0 0 
+        Score: 0
+
+
+  TEST CASE #2: Partial Hand
+  --------------------------
+
+  Player Hand: 1 7 6 3 0 0 0 
+        Score: 17
+
+
+  TEST CASE #3: Full Hand
+  -----------------------
+
+  Player Hand: 8 2 5 4 3 6 1 
+        Score: 29
+
+
+
++----------------------------------+
+| TASK #5: Putting It All Together |
++----------------------------------+
+
+  For the following test cases, assume that they are independent of each other
+
+
+  TEST CASE #1: Empty Hand
+  ------------------------
+
+  Deck (before): 9 4 7 3 5 0 0 0 0 0 0 0 0 0 0 
+   Deck (after): 4 7 3 5 0 0 0 0 0 0 0 0 0 0 0 
+
+  Player Hand (before): 0 0 0 0 0 0 0 
+   Player Hand (after): 9 0 0 0 0 0 0 
+
+  Score: 9
+
+
+  TEST CASE #2: Partial Hand, Can Continue
+  ----------------------------------------
+
+  Deck (before): 9 4 7 3 5 0 0 0 0 0 0 0 0 0 0 
+   Deck (after): 4 7 3 5 0 0 0 0 0 0 0 0 0 0 0 
+
+  Player Hand (before): 1 7 6 3 0 0 0 
+   Player Hand (after): 1 7 6 3 9 0 0 
+
+  Score: 26
+
+
+  TEST CASE #3: Partial Hand, Out of the Game
+  -------------------------------------------
+
+  Deck (before): 6 2 4 4 7 0 0 0 0 0 0 0 0 0 0 
+   Deck (after): 2 4 4 7 0 0 0 0 0 0 0 0 0 0 0 
+
+  Player Hand (before): 1 7 6 3 0 0 0 
+   Player Hand (after): 1 7 6 3 6 0 0 
+
+  Score: 0
+
+
+  TEST CASE #4: Full Hand, Can Continue
+  -------------------------------------
+
+  Deck (before): 9 4 7 3 5 0 0 0 0 0 0 0 0 0 0 
+   Deck (after): 4 7 3 5 0 0 0 0 0 0 0 0 0 0 0 
+
+  Player Hand (before): 8 2 5 4 3 6 0 
+   Player Hand (after): 8 2 5 4 3 6 9 
+
+  Score: 37
+
+
+  TEST CASE #5: Full Hand, Out of the Game
+  ----------------------------------------
+
+  Deck (before): 6 2 4 4 7 0 0 0 0 0 0 0 0 0 0 
+   Deck (after): 2 4 4 7 0 0 0 0 0 0 0 0 0 0 0 
+
+  Player Hand (before): 8 2 5 4 3 6 0 
+   Player Hand (after): 8 2 5 4 3 6 6 
+
+  Score: 0
+
+
+
++------------------+
+| Round Simulation |
++------------------+
+
+  - This is just an extra display to show how your solution
+      would be used in a text-based version of Flip 7
+  - This simulates a full round consisting of 3 players,
+      wherein they would all be drawing from 1 deck
+  - In the real game, the deck is hidden; we're just displaying it
+      to show the transfer of the card from deck to hand
+  - At the end of the round, their running total score is displayed
+  - Player #2 is expected to be out of the game after the round
+
+
+  Deck: 2 5 9 6 6 7 4 2 5 7 0 0 0 0 0 
+
+  Player #1: 6 4 9 0 0 0 0 
+  Player #2: 8 5 7 0 0 0 0 
+  Player #3: 7 4 8 0 0 0 0 
+
+  Player 1 takes a turn...
+  Player 2 takes a turn...
+  Player 3 takes a turn...
+
+  Player #1: 6 4 9 2 0 0 0 // Score: 21
+  Player #2: 8 5 7 5 0 0 0 // Score: 0
+  Player #3: 7 4 8 9 0 0 0 // Score: 28
