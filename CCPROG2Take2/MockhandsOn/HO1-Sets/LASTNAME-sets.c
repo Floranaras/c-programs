@@ -63,7 +63,7 @@ setUnion(String *A, String *B, String *C, int nElemA, int nElemB)
    {
       if (Search(*(A+j),C, nElemC) == -1)
       {
-         strcpy(*(C+j), *(A+j));
+         strcpy(*(C+nElemC), *(A+j));
          nElemC++;
       }      
    }
@@ -186,8 +186,7 @@ substringList(String key, String B[], String C[], int nElemB)
    {
       wordLen = strlen(B[j]);
 
-      nextStr = 1;
-      for (k = 0; k < wordLen && nextStr; k++)
+      for (k = 0; k <= wordLen - keyLen; k++)
       {
          match = 1;
          for (m = 0; m < keyLen && match; m++)
@@ -202,7 +201,6 @@ substringList(String key, String B[], String C[], int nElemB)
          {
             strcpy(C[nElemC], B[j]);
             nElemC++;
-            nextStr = 0;
          }
       }
    }
