@@ -6,6 +6,45 @@ void initDatabase (databaseType *db)
 }
 void inputNewUser (databaseType *db)
 {
+	int j;
+	char choice = 'y';
+	userType *currentUser = &db->users[db->userCount];
+	int *vaxCtr = &currentUser->vaxCount;
+	vaxType *vaxList = &currentUser->vaccines;
+
+	if (db->userCount != MAX_PEOPLE)
+	{
+		scanf("%s", currentUser->name.first);
+		scanf("%s", currentUser->name.last);
+		scanf("%c", &currentUser->name.middle);
+
+		scanf("%d", &currentUser->birthDate.month);
+		scanf("%d", &currentUser->birthDate.day);
+		scanf("%d", &currentUser->birthDate.year);
+		
+		*vaxCtr = 0;
+
+		for (j = 0; j < MAX_VAX && choice == 'y'; j++)	
+		{
+			scanf("%s",vaxList[j].brand);
+			scanf("%s",vaxList[j].city);
+
+			scanf("%d",&vaxList[j].vaxDate.month);
+			scanf("%d",&vaxList[j].vaxDate.day);
+			scanf("%d",&vaxList[j].vaxDate.year);
+
+			(*vaxCtr)++;
+
+			scanf(" %c", choice);
+		}
+
+		db->userCount++;
+	}
+
+	else 
+	{
+		printf("Database is full ;-;");
+	}
 
 }
 
