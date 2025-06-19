@@ -4,14 +4,109 @@ void initDatabase (databaseType *db)
 {
 	db->userCount = 0;
 }
+
+int isNameFound()
+{
+	
+}
+
+int isUnique(databaseType *db)
+{
+	int foundCtr = 0;
+	int foundIdx[MAX_PEOPLE];
+
+}
+
+void inputUser(userType *user)
+{
+	printf("\n===Enter name of user===\n");
+	printf("Enter firstname: ");
+	scanf("%s", user->name.first);
+	printf("Enter lastname: ");
+	scanf("%s", user->name.last);
+	printf("Enter middle initial: ");
+	scanf(" %c", &user->name.middle);
+
+	printf("\n===Enter day of birth===\n");
+	printf("Enter month: ");
+	scanf("%d", &user->birthDate.month);
+	printf("Enter day: ");
+	scanf("%d", &user->birthDate.day);
+	printf("Enter year: ");
+	scanf("%d", &user->birthDate.year);
+}
+
+int compName (databaseType *db, userType user, int idx)
+{
+	nameType *currentUserName = &db->users[idx].name;
+	return !strcmp(currentUserName->first, user.name.first) && 
+			!strcmp(currentUserName->last, user.name.last) &&
+			currentUserName->middle == user.name.middle;
+}
+int isUserFound(databaseType *db, userType user)
+{
+	int j = 0;
+
+	while (j < db->userCount && !compName(db, user, j))
+		j++;
+
+	if (j == db->userCount)
+		return -1;
+
+	return j;	
+}
+void inputVaxInfo(databaseType *db)
+{
+	int j;
+	int idx = -1;
+	char choice = 'y';
+	userType *currentUser; 
+	int *vaxCtr; 
+	vaxType *vaxList; 
+	userType temp;	
+
+	*vaxCtr = 0;
+
+	do 
+	{
+		inputUser(&temp);
+		idx = isUserFound(db, temp);
+
+			*currentUser = db->users[idx];
+			*vaxCtr = currentUser->vaxCount;
+
+		if (idx != -1)
+		{
+			for (j = 0; j < MAX_VAX && choice == 'y'; j++)	
+			{
+				printf("\n===Enter vaccine information===\n");
+				printf("Enter brand: ");
+				scanf("%s",currentUser->vaccines[j].brand);
+				printf("Enter city where vaccination was administered: ");
+				scanf("%s",currentUser->vaccines[j].city);
+						
+				printf("\n===Enter date of when vaccination was administered===\n");
+				printf("Enter month: ");
+				scanf("%d",&currentUser->vaccines[j].vaxDate.month);
+				printf("Enter day: ");	
+				scanf("%d",&currentUser->vaccines[j].vaxDate.day);
+				printf("Enter year: ");
+				scanf("%d",&currentUser->vaccines[j].vaxDate.year);
+
+				(*vaxCtr)++;
+				printf("Do you want to enter another vaccine? (y/n): ");
+				scanf(" %c", &choice);
+			}			
+		}
+	} while (idx == -1);
+	
+}
+
 void inputNewUser (databaseType *db)
 {
 	int j;
-	char choice = 'y';
 	userType *currentUser = &db->users[db->userCount];
-	int *vaxCtr = &currentUser->vaxCount;
-	vaxType *vaxList = currentUser->vaccines;
-
+	
 	if (db->userCount != MAX_PEOPLE)
 	{
 		printf("\n===Enter name of user===\n");
@@ -30,29 +125,6 @@ void inputNewUser (databaseType *db)
 		printf("Enter year: ");
 		scanf("%d", &currentUser->birthDate.year);
 		
-		*vaxCtr = 0;
-
-		for (j = 0; j < MAX_VAX && choice == 'y'; j++)	
-		{
-			printf("\n===Enter vaccine information===\n");
-			printf("Enter brand: ");
-			scanf("%s",vaxList[j].brand);
-			printf("Enter city where vaccination was administered: ");
-			scanf("%s",vaxList[j].city);
-					
-			printf("\n===Enter date of when vaccination was administered===\n");
-			printf("Enter month: ");
-			scanf("%d",&vaxList[j].vaxDate.month);
-			printf("Enter day: ");	
-			scanf("%d",&vaxList[j].vaxDate.day);
-			printf("Enter year: ");
-			scanf("%d",&vaxList[j].vaxDate.year);
-
-			(*vaxCtr)++;
-			printf("Do you want to enter another vaccine? (y/n): ");
-			scanf(" %c", &choice);
-		}
-
 		db->userCount++;
 	}
 
@@ -129,9 +201,9 @@ void searchByDate (databaseType *db)
 	printf("\n===Search User by Birthdate===\n");
 	printf("\n===Enter birthdate of user===\n");
 	printf("Enter month: ");	
-	scanf("%d", input.month);
+	scanf("%d", &input.month);
 	printf("Enter day: ");	
-	scanf("%d", input.day);
+	scanf("%d", &input.day);
 	printf("Enter year: ");	
 	scanf("%d", &input.year);
 
