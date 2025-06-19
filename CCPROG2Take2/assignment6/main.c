@@ -1,11 +1,14 @@
-#include "functions.c"
+#include "head.h"
 
-int main ()
+int main()
 {
-	databaseType db;
-
-	db.teacherCtr = 0;
-
-	
-	return 0;
+    databaseType db;
+    
+    // Initialize the database
+    initDatabase(&db);
+    
+    // Start the main menu
+    mainMenu(&db);
+    
+    return 0;
 }

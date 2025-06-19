@@ -1,3 +1,6 @@
+#ifndef HEAD_H
+#define HEAD_H
+
 #include <stdio.h>
 #include <string.h>
 
@@ -14,28 +17,36 @@ typedef char String9[STR9];
 
 struct subjectTag
 {
-	String7 courseCode;
-	String9 time;
-	String7 section;
-	int units;
+    String7 courseCode;
+    String9 time;
+    int section;
+    float units;
 };
-
 typedef struct subjectTag subjectType;
 
 struct teacherTag
 {
-	String25 name;
-	String9 dept;
-	subjectType subjects[MAX_SUB];
-	int subjectsCtr;
+    String25 name;
+    String9 dept;
+    subjectType subjects[MAX_SUB];
+    int subjectsCtr;
 };
-
 typedef struct teacherTag teacherType;
 
 struct databaseTag
 {
-	teacherType teachers[MAX_TEACHER];
-	int teacherCtr;
+    teacherType teachers[MAX_TEACHER];
+    int teacherCtr;
 };
-
 typedef struct databaseTag databaseType;
+
+// Function declarations
+void initDatabase(databaseType *db);
+int isSubjectTaken(databaseType *db, int teacherIndex, String7 courseCode, int section);
+void inputSubjects(databaseType *db, int teacherIndex);
+int isFound(databaseType *db, String25 input);
+void inputTeacher(databaseType *db);
+void displayByCourse(databaseType *db);
+void mainMenu(databaseType *db);
+
+#endif
