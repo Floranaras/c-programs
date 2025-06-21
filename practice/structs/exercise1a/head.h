@@ -3,6 +3,8 @@
 
 #define MAX_VAX (4)
 #define MAX_PEOPLE (15)
+#define MAX_BRAND (8)
+#define EXIT ("XXX")
 
 typedef char String10[11];
 
@@ -47,7 +49,7 @@ struct databaseTag
 {
 	userType users[MAX_PEOPLE];
 	int userCount;
-};
+	String10 vax[MAX_BRAND]; 
+}; 
 
 typedef struct databaseTag databaseType;
-
