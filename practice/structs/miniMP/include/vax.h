@@ -1,3 +1,6 @@
+#ifndef VAX_H
+#define VAX_H 
+
 #include <stdio.h>
 #include <string.h>
 
@@ -54,3 +57,23 @@ struct databaseTag
 
 typedef struct databaseTag databaseType;
 
+
+// Prototype Functions
+void mainMenu (databaseType *db);
+void initDatabase (databaseType *db);
+void searchMenu (databaseType *db);
+void searchByBday (databaseType *db);
+void searchByName (databaseType *db);
+void displayUser (userType user);
+void setVaxInfo(databaseType *db);
+int verifyBrand(databaseType *db, String10 input);
+void verifyUser (databaseType *db, int *idx);
+void setUser (databaseType *db);
+void setName (nameType *temp);
+void setDate (dateType *temp);
+int isValid (databaseType *db, userType *temp);
+int getUser(databaseType *db, userType *temp);
+int isNameFound(nameType temp, nameType db);
+int isBdayFound(dateType temp, dateType db);
+
+#endif
