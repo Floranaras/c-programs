@@ -4,6 +4,7 @@
 #define MAX_VAX (4)
 #define MAX_PEOPLE (15)
 #define MAX_BRAND (8)
+#define MAX_MONTHS (13)
 #define EXIT ("XXX")
 
 typedef char String10[11];
@@ -20,6 +21,7 @@ typedef struct nameTag nameType;
 struct dateTag
 {
 	int month;
+	String10 mon;
 	int day;
 	int year;
 };
@@ -54,3 +56,5 @@ struct databaseTag
 
 typedef struct databaseTag databaseType;
 
+
+void getMonthName (dateType *date);

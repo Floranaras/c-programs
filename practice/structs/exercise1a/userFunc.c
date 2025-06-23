@@ -49,6 +49,7 @@ void setDate (dateType *temp)
 	scanf("%d", &temp->day);
 	printf("Enter year: ");
 	scanf("%d", &temp->year);
+	getMonthName(temp);
 }
 
 void setName (nameType *temp)

@@ -1,4 +1,5 @@
 #include "searchFunc.c"
+#include <string.h>
 
 void initDatabase (databaseType *db)
 {
@@ -11,6 +12,14 @@ void initDatabase (databaseType *db)
 	{ 
 		strcpy(db->vax[j], A[j]);
 	}
+}
+
+void getMonthName (dateType *date)
+{
+	String10 months[MAX_MONTHS] = {"","January","February","March","April",
+									"MAY","June","July","August","September",
+									"October","November","December"};
+	strcpy(date->mon, months[date->month]);
 }
 
 void mainMenu (databaseType *db)
