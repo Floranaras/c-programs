@@ -109,5 +109,7 @@ int readPhoneBook (entryType *phoneBook)
     else 
         entryCtr = getData (fp, phoneBook);
 
+	fclose (fp);
+
     return entryCtr;
 }
