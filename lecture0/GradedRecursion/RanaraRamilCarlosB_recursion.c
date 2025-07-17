@@ -64,14 +64,14 @@ float power(int base, int exp)
     Do NOT modify/change the return type nor parameters
   */
 
-  if (exp == 0) 
+    if (exp == 0) 
         return 1;
     else if (exp > 0)
         return base * power(base, exp - 1);
     else
         return 1 / power(base, -exp);
 
-        // replace with actual return value
+    // replace with actual return value
 }
 
 /**
@@ -83,9 +83,9 @@ int sum(int arr[], int n)
     Do NOT use printf() nor scanf() in your final solution
     Do NOT modify/change the return type nor parameters
   */
-  if (n <= 0)
-    return 0;
-  
+    if (n <= 0)
+        return 0;
+
     return arr[n-1] + sum(arr, n-1);
 }
 
@@ -98,12 +98,12 @@ int linearSearch(int arr[], int n, int key)
     Do NOT use printf() nor scanf() in your final solution
     Do NOT modify/change the return type nor parameters
   */
-  if (n == 0)
-    return -1;
-  if (arr[n-1] == key)
-    return n-1;
+    if (n == 0)
+        return -1;
+    if (arr[n-1] == key)
+        return n-1;
 
-  return linearSearch(arr, n-1, key);
+    return linearSearch(arr, n-1, key);
 }
 
 /**
@@ -116,16 +116,16 @@ void getMinMax(int *min, int *max, int arr[], int n)
     Do NOT modify/change the return type nor parameters
   */
 
-  if (n == 0)
-    return;
+    if (n == 0)
+        return;
 
-  if (arr[n-1] < *min)
-    *min = arr[n-1];
+    if (arr[n-1] < *min)
+        *min = arr[n-1];
 
-  if (arr[n-1] > *max)
-    *max = arr[n-1];
+    if (arr[n-1] > *max)
+        *max = arr[n-1];
 
-  getMinMax(min, max, arr, n-1);
+    getMinMax(min, max, arr, n-1);
 }
 
 /**
@@ -137,13 +137,13 @@ void evenNumbers(int evens[], int *n, int start, int end)
     Do NOT use printf() nor scanf() in your final solution
     Do NOT modify/change the return type nor parameters
   */
-  
+
     if (start > end)
-     return;
+        return;
 
     if (start % 2 == 0) {
-      evens[*n] = start; 
-      (*n)++;
+        evens[*n] = start; 
+        (*n)++;
     }
     evenNumbers(evens, n, start + 1, end);
 
@@ -158,15 +158,15 @@ void oddNumbersReverse(int odds[], int *n, int start, int end)
     Do NOT use printf() nor scanf() in your final solution
     Do NOT modify/change the return type nor parameters
   */
-  if (end < start)
-    return;
+    if (end < start)
+        return;
 
-  if (end % 2 != 0) {
-  odds[*n] = end;
-  (*n)++;
-}
+    if (end % 2 != 0) {
+        odds[*n] = end;
+        (*n)++;
+    }
 
-oddNumbersReverse(odds, n, start, end - 1);
+    oddNumbersReverse(odds, n, start, end - 1);
 
 }
 
@@ -179,11 +179,11 @@ int binarySearch(int arr[], int key, int low, int high)
     Do NOT use printf() nor scanf() in your final solution
     Do NOT modify/change the return type nor parameters
   */
- if (low > high)
+    if (low > high)
         return -1;
-    
+
     int mid = low + (high - low) / 2;
-    
+
     if (arr[mid] == key)
         return mid;
     else if (arr[mid] > key)
@@ -202,11 +202,11 @@ int mysterySequence(int n)
     Do NOT use printf() nor scanf() in your final solution
     Do NOT modify/change the return type nor parameters
   */
-  if (n == 0)
-          return 0;
-      if (n == 1)
-          return 1;
-      return mysterySequence(n-1) + mysterySequence(n-2);
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return 1;
+    return mysterySequence(n-1) + mysterySequence(n-2);
 }
 
 /******************************************************************************
@@ -214,33 +214,33 @@ int mysterySequence(int n)
  ******************************************************************************/
 int main()
 {
-  printf("+-----------+\n");
-  printf("| RECURSION |\n");
-  printf("+-----------+\n");
+    printf("+-----------+\n");
+    printf("| RECURSION |\n");
+    printf("+-----------+\n");
 
-  printf("\n========== power ==========\n\n");
-  displayPower();
+    printf("\n========== power ==========\n\n");
+    displayPower();
 
-  printf("\n========== sum ==========\n\n");
-  displaySum();
+    printf("\n========== sum ==========\n\n");
+    displaySum();
 
-  printf("\n========== linearSearch ==========\n\n");
-  displayLinearSearch();
+    printf("\n========== linearSearch ==========\n\n");
+    displayLinearSearch();
 
-  printf("\n========== getMinMax ==========\n\n");
-  displayGetMinMax();
+    printf("\n========== getMinMax ==========\n\n");
+    displayGetMinMax();
 
-  printf("\n========== evenNumbers ==========\n\n");
-  displayEvenNumbers();
+    printf("\n========== evenNumbers ==========\n\n");
+    displayEvenNumbers();
 
-  printf("\n========== oddNumbersReverse ==========\n\n");
-  displayOddNumbersReverse();
+    printf("\n========== oddNumbersReverse ==========\n\n");
+    displayOddNumbersReverse();
 
-  printf("\n========== binarySearch ==========\n\n");
-  displayBinarySearch();
+    printf("\n========== binarySearch ==========\n\n");
+    displayBinarySearch();
 
-  printf("\n========== mysterySequence ==========\n\n");
-  displayMysterySequence();
+    printf("\n========== mysterySequence ==========\n\n");
+    displayMysterySequence();
 
-  return 0;
+    return 0;
 }
